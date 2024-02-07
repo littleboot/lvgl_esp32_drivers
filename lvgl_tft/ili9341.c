@@ -213,12 +213,12 @@ static void ili9341_set_orientation(uint8_t orientation)
 #elif defined (CONFIG_LV_PREDEFINED_DISPLAY_WROVER4)
     uint8_t data[] = {0x6C, 0xEC, 0xCC, 0x4C};
 #elif defined (CONFIG_LV_PREDEFINED_DISPLAY_SUNTON_2432S028)
-	uint8_t data[] = {0x00, 0x80, 0x60, 0x20};
+	uint8_t data[] = {0x60, 0x20, 0x00, 0x80};
 #elif defined (CONFIG_LV_PREDEFINED_DISPLAY_NONE)
     uint8_t data[] = {0x48, 0x88, 0x28, 0xE8};
 #endif
 
-	ESP_LOGI(TAG, "0x36 command value: 0x%02X", data[orientation]);
+    ESP_LOGI(TAG, "0x36 command value: 0x%02X", data[orientation]);
 
     ili9341_send_cmd(0x36);
     ili9341_send_data((void *) &data[orientation], 1);
