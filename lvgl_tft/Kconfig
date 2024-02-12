@@ -1023,6 +1023,12 @@ menu "LVGL TFT Display controller"
 
         help
             Configure the display BCLK (LED) pin here.
+    
+    config LV_DISP_BACKLIGHT_PWM_LVL
+        int "Backlight default brightness level"
+        depends on LV_DISP_BACKLIGHT_PWM
+        range 0 100
+        default 100
 
     config LV_I2C
         bool
