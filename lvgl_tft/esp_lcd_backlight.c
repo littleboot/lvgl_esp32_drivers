@@ -49,7 +49,8 @@ disp_backlight_h disp_backlight_new(const disp_backlight_config_t *config)
             .intr_type = LEDC_INTR_DISABLE,
             .timer_sel = config->timer_idx,
             .duty = 0,
-            .hpoint = 0
+            .hpoint = 0,
+            .flags.output_invert = config->output_invert
         };
         const ledc_timer_config_t LCD_backlight_timer = {
             .speed_mode = LEDC_LOW_SPEED_MODE,
@@ -60,7 +61,6 @@ disp_backlight_h disp_backlight_new(const disp_backlight_config_t *config)
 
         ESP_ERROR_CHECK(ledc_timer_config(&LCD_backlight_timer));
         ESP_ERROR_CHECK(ledc_channel_config(&LCD_backlight_channel));
-        gpio_iomux_out(config->gpio_num, ledc_periph_signal[LEDC_LOW_SPEED_MODE].sig_out0_idx + config->channel_idx, config->output_invert);
     }
     else
     {
@@ -80,7 +80,7 @@ disp_backlight_h disp_backlight_new(const disp_backlight_config_t *config)
 
 void disp_backlight_set(disp_backlight_h bckl, int brightness_percent)
 {
-    // Check input paramters
+    // Check input parameters
     if (bckl == NULL)
         return;
     if (brightness_percent > 100)
