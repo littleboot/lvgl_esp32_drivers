@@ -7,6 +7,8 @@
 #include "esp_lcd_backlight.h"
 #include "sdkconfig.h"
 
+static disp_backlight_h bckl_handle = NULL;
+
 void *disp_driver_init(void)
 {
 #if defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_ILI9341
@@ -65,7 +67,7 @@ void *disp_driver_init(void)
         .timer_idx = 0,
         .channel_idx = 0 // @todo this prevents us from having two PWM controlled displays
     };
-    disp_backlight_h bckl_handle = disp_backlight_new(&bckl_config);
+    bckl_handle = disp_backlight_new(&bckl_config);
     disp_backlight_set(bckl_handle, 100);
     return bckl_handle;
 #else
@@ -147,4 +149,11 @@ void disp_driver_set_px(lv_disp_drv_t * disp_drv, uint8_t * buf, lv_coord_t buf_
 #elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_PCD8544
    pcd8544_set_px_cb(disp_drv, buf, buf_w, x, y, color, opa);
 #endif
+}
+
+// Change backlight level without making handle a public variable
+void disp_backlight_change(int level)
+{
+    if(bckl_handle != NULL)
+        disp_backlight_set(bckl_handle, level);
 }
