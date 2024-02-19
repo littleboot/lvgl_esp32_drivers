@@ -213,10 +213,39 @@ static void ili9341_set_orientation(uint8_t orientation)
 #elif defined (CONFIG_LV_PREDEFINED_DISPLAY_WROVER4)
     uint8_t data[] = {0x6C, 0xEC, 0xCC, 0x4C};
 #elif defined (CONFIG_LV_PREDEFINED_DISPLAY_SUNTON_2432S028)
-	uint8_t data[] = {0x60, 0x20, 0x00, 0x80};
+	uint8_t data[] = {0x60, 0x20, 0xC0, 0x80};
 #elif defined (CONFIG_LV_PREDEFINED_DISPLAY_NONE)
     uint8_t data[] = {0x48, 0x88, 0x28, 0xE8};
 #endif
+
+	#if (0) /* Test code for display orientation */
+	//Memory Access Control register (36h)
+	uint8_t MAC_reg = 0x00; 
+
+	//Register Bit values
+	//These 3 bits control MCU to memory write/read direction.
+	uint8_t MY_RowAddressOrder = 1; //D7
+	uint8_t MX_ColumnAddressOrder = 1; //D6
+	uint8_t MV_RowColumnExchange = 1; //D5
+	//LCD vertical refresh direction control.
+	uint8_t ML_VerticalRefreshOrder = 0; //D4
+	//Color selector switch control (0=RGB color filter panel, 1=BGR color filter panel)
+	uint8_t BGR_RGBBGROrder = 0; //D3
+	//LCD horizontal refreshing direction control.
+	uint8_t MH_HorizontalRefreshOrder = 0; //D2
+	//D1 = Don't care
+	//D0 = Don't care
+
+	MAC_reg |= (MY_RowAddressOrder << 7);
+	MAC_reg |= (MX_ColumnAddressOrder << 6);
+	MAC_reg |= (MV_RowColumnExchange << 5);
+	MAC_reg |= (ML_VerticalRefreshOrder << 4);
+	MAC_reg |= (BGR_RGBBGROrder << 3);
+	MAC_reg |= (MH_HorizontalRefreshOrder << 2);
+
+	ESP_LOGI(TAG, "MAC_reg value: 0x%02X", MAC_reg);
+	data[orientation] = MAC_reg;
+	#endif
 
     ESP_LOGI(TAG, "0x36 command value: 0x%02X", data[orientation]);
 
