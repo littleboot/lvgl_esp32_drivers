@@ -96,7 +96,7 @@ void disp_backlight_set(disp_backlight_h bckl, int brightness_percent)
         ESP_ERROR_CHECK(ledc_set_duty(LEDC_LOW_SPEED_MODE, bckl_dev->index, duty_cycle));
         ESP_ERROR_CHECK(ledc_update_duty(LEDC_LOW_SPEED_MODE, bckl_dev->index));
     } else {
-        ESP_ERROR_CHECK(gpio_set_level(bckl_dev->index, brightness_percent));
+        ESP_ERROR_CHECK(gpio_set_level(bckl_dev->index, (brightness_percent > 0) ? 1: 0));
     }
 }
 
