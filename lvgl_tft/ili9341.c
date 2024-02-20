@@ -226,7 +226,7 @@ static void ili9341_set_orientation(uint8_t orientation)
 	//These 3 bits control MCU to memory write/read direction.
 	uint8_t MY_RowAddressOrder = 1; //D7
 	uint8_t MX_ColumnAddressOrder = 1; //D6
-	uint8_t MV_RowColumnExchange = 1; //D5
+	uint8_t MV_RowColumnExchange = 0; //D5
 	//LCD vertical refresh direction control.
 	uint8_t ML_VerticalRefreshOrder = 0; //D4
 	//Color selector switch control (0=RGB color filter panel, 1=BGR color filter panel)
